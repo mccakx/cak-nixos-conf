@@ -5,6 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
+
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +31,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, aagl, home-manager, lix, lix-module, ... } @ inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nix-cachyos-kernel, aagl, home-manager, lix, lix-module, ... } @ inputs:
   let
     makeConfig = { name, username, hostFile, extraModules ? [] }: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";

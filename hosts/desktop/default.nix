@@ -24,7 +24,7 @@ in
   } ];
   networking.interfaces.enp42s0.useDHCP = false;
   networking.defaultGateway = "192.168.100.1";
-  networking.nameservers = ["1.1.1.1" "8.8.8.8" "192.168.100.1"];
+  networking.nameservers = ["9.9.9.9" "1.1.1.1" "8.8.8.8" "192.168.100.1"];
 
   environment.systemPackages = with pkgs; [
     (nixpkgsUnstable.lact)
