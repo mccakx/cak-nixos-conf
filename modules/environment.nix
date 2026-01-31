@@ -57,7 +57,7 @@ in
 
       virt-manager
 
-      protonplus
+      (nixpkgsUnstable.protonplus)
 
       # Virtualization tools
 #      (virt-manager.overrideAttrs (old: {
