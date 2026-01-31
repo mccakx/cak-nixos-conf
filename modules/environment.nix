@@ -57,6 +57,8 @@ in
 
       virt-manager
 
+      protonplus
+
       # Virtualization tools
 #      (virt-manager.overrideAttrs (old: {
 #        nativeBuildInputs = old.nativeBuildInputs ++ [wrapGAppsHook];
