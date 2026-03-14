@@ -38,20 +38,20 @@ in
 
   fileSystems."/drive/HDDWin1" = {
     device = "/dev/disk/by-uuid/2B0B486A2FDC92F6";
-    fsType = "ntfs-3g";
-    options = [ "rw uid=1000" ];
+    fsType = "ntfs3";
+    options = ["uid=1000" "windows_names" "prealloc"];
   };
 
   fileSystems."/drive/SSDWin1" = {
     device = "/dev/disk/by-uuid/3A3E10783E102F7F";
-    fsType = "ntfs-3g";
-    options = [ "rw uid=1000" ];
+    fsType = "ntfs3";
+    options = ["uid=1000" "discard" "windows_names" "prealloc"];
   };
 
   fileSystems."/drive/NVMEWin1" = {
     device = "/dev/disk/by-uuid/D058CDED58CDD280";
-    fsType = "ntfs-3g";
-    options = [ "rw uid=1000" ];
+    fsType = "ntfs3";
+    options = ["uid=1000" "discard" "windows_names" "prealloc"];
   };
 
   programs.sleepy-launcher.enable = true;
