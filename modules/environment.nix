@@ -58,6 +58,7 @@ in
       virt-manager
 
       (nixpkgsUnstable.protonplus)
+      kdePackages.filelight
 
       # Virtualization tools
 #      (virt-manager.overrideAttrs (old: {
