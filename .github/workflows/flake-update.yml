@@ -1,0 +1,30 @@
+# .github/workflows/flake-update.yml
+name: Update flake.lock
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v14
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flake.lock
+          git diff --cached --quiet && exit 0
+          git commit -m "flake: update flake.lock"
+          git push
