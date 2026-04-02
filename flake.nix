@@ -57,11 +57,6 @@
         username = "cak"; 
         hostFile = ./hosts/nixos-test; 
       };
-      "840-g6" = makeConfig { 
-        name = "840-g6"; 
-        username = "cak"; 
-        hostFile = ./hosts/840-g6; 
-      };
       "desktop" = makeConfig { 
         name = "desktop"; 
         username = "cak"; 
