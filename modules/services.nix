@@ -25,7 +25,7 @@
     };
     scx = {
       enable = true;
-      scheduler = "scx_bpfland";
+      scheduler = "scx_lavd";
     };
     udev.extraRules = builtins.readFile ./rules;
   };
