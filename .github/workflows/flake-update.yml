@@ -3,7 +3,8 @@ name: Update flake.lock
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 1 * * *'
+    - timezone: 'Asia/Jakarta'
   workflow_dispatch:
 
 jobs:
