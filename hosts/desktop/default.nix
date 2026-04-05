@@ -48,12 +48,6 @@ in
     options = ["uid=1000" "windows_names" ];
   };
 
-  fileSystems."/drive/NVMEWin1" = {
-    device = "/dev/disk/by-uuid/D058CDED58CDD280";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "windows_names"];
-  };
-
   programs.sleepy-launcher.enable = true;
   programs.anime-game-launcher.enable = true;
 
