@@ -59,6 +59,7 @@ in
 
       (nixpkgsUnstable.protonplus)
       kdePackages.filelight
+      kdiskmark
 
       # Virtualization tools
 #      (virt-manager.overrideAttrs (old: {
