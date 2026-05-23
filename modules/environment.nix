@@ -44,7 +44,7 @@ in
       mangohud
       tio
       protonup-qt
-      bottles
+      (nixpkgsUnstable.bottles)
       dconf-editor
       remmina
       inetutils
