@@ -48,6 +48,13 @@ in
     options = ["uid=1000" "windows_names" ];
   };
 
+  fileSystems."/drive/SSDLinux1" = {
+    device = "/dev/disk/by-uuid/9e01b450-f7c0-47fc-b098-c66cd04b7d0b";
+    fsType = "ext4";
+    options = ["noatime"];
+  };
+
+
   programs.sleepy-launcher.enable = true;
   programs.anime-game-launcher.enable = true;
 
