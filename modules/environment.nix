@@ -48,6 +48,7 @@ in
       dconf-editor
       remmina
       inetutils
+      gparted-full
       
       # Spice tools
       spice

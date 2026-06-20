@@ -42,18 +42,11 @@ in
     options = ["uid=1000" "windows_names"];
   };
 
-  fileSystems."/drive/SSDWin1" = {
-    device = "/dev/disk/by-uuid/3A3E10783E102F7F";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "windows_names" ];
+  fileSystems."/drive/SSDLinux1" = {
+    device = "/dev/disk/by-uuid/03363123-77ce-4c24-9ae3-4a3bb9c23a73";
+    fsType = "ext4";
+    options = ["defaults" "noatime" "nofail" ];
   };
-
-#  fileSystems."/drive/SSDLinux1" = {
-#    device = "/dev/disk/by-uuid/9e01b450-f7c0-47fc-b098-c66cd04b7d0b";
-#    fsType = "ext4";
-#    options = ["noatime"];
-#  };
-
 
   programs.sleepy-launcher.enable = true;
   programs.anime-game-launcher.enable = true;

@@ -7,7 +7,7 @@
         "widget.use-xdg-desktop-portal.file-picker" = 1;
       };
     };
-    #kdeconnect.enable = true;
+    kdeconnect.enable = true;
     virt-manager.enable = true;
     partition-manager.enable = true;
     ssh = {
