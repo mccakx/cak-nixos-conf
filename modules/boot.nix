@@ -11,7 +11,7 @@ in
     };
     efi.canTouchEfiVariables = true;
   };
-  boot.kernelPackages = cachyosKernel.linuxPackages-cachyos-latest-lto-x86_64-v3;
+  boot.kernelPackages = cachyosKernel.linuxPackages-cachyos-latest-x86_64-v3;
   #boot.kernelPackages = pkgs.linuxPackages_zen;
 
 

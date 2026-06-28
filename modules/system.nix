@@ -40,8 +40,8 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
-      substituters = [ "https://cache.garnix.io" "https://ezkea.cachix.org" ];
-      trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" ];
+      substituters = [ "https://ezkea.cachix.org" "https://attic.xuyh0120.win/lantian"];
+      trusted-public-keys = [ "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
     };
     gc = {
       automatic = true;
