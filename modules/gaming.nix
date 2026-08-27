@@ -7,10 +7,13 @@
   '';
 
   config = lib.mkIf config.cak.gaming.enable {
-    # TEMPORARY: pinned to CachyOS LTS (6.18.x). The -latest- kernel (7.2.0)
-    # regressed amdgpu Display Core (v3.2.384 + new HDMI-FRL polling) so the
-    # Navi 22 HDMI-A-1 connector never enumerates -> kwin "no outputs" -> blank
-    # SDDM. Revert to -latest- once the DC HDMI-FRL fix ships in a released kernel.
+    # Pinned to CachyOS LTS (6.18.x) — the intended kernel here. Still a full
+    # CachyOS kernel (BORE, sched-ext/scx_bpfland, tuned config), just on the LTS
+    # base, so no gaming/perf downside. We moved off -latest- because 7.2.0
+    # regressed amdgpu Display Core (v3.2.384 + new HDMI-FRL polling): the Navi 22
+    # HDMI-A-1 connector stopped enumerating -> kwin "no outputs" -> blank SDDM.
+    # -latest- is optional; only switch back once the DC HDMI-FRL fix has landed
+    # in a released kernel, or the display will break again.
     boot.kernelPackages =
       inputs.nix-cachyos-kernel.legacyPackages."x86_64-linux".linuxPackages-cachyos-lts-x86_64-v3;
 
