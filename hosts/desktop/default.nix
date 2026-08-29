@@ -14,19 +14,39 @@ in
   networking.hostName = "desktop"; # Define your hostname.
 
   cak.gaming.enable = true;
-  networking.useDHCP = false;
-  networking.bridges = {
-    "br0" = {
-      interfaces = [ "enp42s0" ];
+
+  # Let NetworkManager own the LAN bridge natively (instead of scripted
+  # networking) so KDE reports a proper "Connected/Full" state instead of the
+  # bogus "Limited connectivity" it shows for an externally-configured bridge.
+  # VMs still bridge onto br0 at the kernel level; NM ignores their tap/vnet devices.
+  networking.networkmanager.ensureProfiles.profiles = {
+    br0 = {
+      connection = {
+        id = "br0";
+        type = "bridge";
+        interface-name = "br0";
+        autoconnect = true;
+        autoconnect-slaves = 1;   # bring the slave up with the bridge
+      };
+      bridge.stp = false;
+      ipv4 = {
+        method = "manual";
+        address1 = "10.0.1.3/24,10.0.1.1";      # ADDRESS/PREFIX,GATEWAY
+        dns = "10.0.1.1;9.9.9.9;1.1.1.1;";
+      };
+      ipv6.method = "disabled";
+    };
+    enp42s0 = {
+      connection = {
+        id = "enp42s0";
+        type = "ethernet";
+        interface-name = "enp42s0";
+        master = "br0";
+        slave-type = "bridge";
+        autoconnect = true;
+      };
     };
   };
-  networking.interfaces.br0.ipv4.addresses = [ {
-    address = "10.0.1.3";
-    prefixLength = 24;
-  } ];
-  networking.interfaces.enp42s0.useDHCP = false;
-  networking.defaultGateway = "10.0.1.1";
-  networking.nameservers = ["10.0.1.1" "9.9.9.9" "1.1.1.1"];
 
   environment.systemPackages = with pkgs; [
     (nixpkgsUnstable.lact)
