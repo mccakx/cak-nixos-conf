@@ -1,16 +1,5 @@
 { config, lib, pkgs, inputs, ... }:
 
-let
-  # Launch XFCE inside its own D-Bus session. Without this, an RDP login
-  # collides with a console login of the same user (xfce4-session is
-  # single-instance per bus) and the session dies instantly -> blank screen.
-  xrdpXfceSession = pkgs.writeShellScript "xrdp-xfce-session" ''
-    export XDG_SESSION_TYPE=x11
-    export XDG_CURRENT_DESKTOP=XFCE
-    exec ${pkgs.dbus}/bin/dbus-run-session -- ${pkgs.xfce.xfce4-session}/bin/xfce4-session
-  '';
-in
-
 {
   imports =
     [
@@ -22,28 +11,14 @@ in
 
   # ------------------------------------------------------------------
   # Lightweight test VM: no gaming stack (cak.gaming.enable = false),
-  # zen kernel, XFCE desktop instead of Plasma 6.
+  # zen kernel. Desktop is Plasma 6 on Wayland, inherited from
+  # modules/services.nix (SDDM Wayland + plasma6), matching the desktop
+  # and delta hosts. Accessed via the virt-manager / Spice console.
   # ------------------------------------------------------------------
 
   cak.gaming.enable = false;
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
-
-  services.displayManager.sddm.wayland.enable = lib.mkForce false;
-  services.desktopManager.plasma6.enable = lib.mkForce false;
-  services.xserver.desktopManager.xfce.enable = true;
-
-  # ------------------------------------------------------------------
-  # Remote desktop (RDP)
-  # ------------------------------------------------------------------
-
-  services.xrdp = {
-    enable = true;
-    openFirewall = true; # opens TCP 3389
-    defaultWindowManager = "${xrdpXfceSession}";
-  };
-  # xrdp auto-generates a self-signed TLS cert on first start.
-  # NOTE: use RDP or the console/Spice display, not both logged in at once.
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
