@@ -17,6 +17,10 @@
           IdentityFile ~/Downloads/SSH-Keys/github/id_ed25519
       '';
     };
+    localsend = {
+      enable = true;
+      openFirewall = true;
+    };
     # gaming stack (steam/gamescope/gamemode/OBS) lives in modules/gaming.nix
     # behind the cak.gaming.enable toggle
   };
