@@ -26,7 +26,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 
 ## What's configured
 
-**Desktop:** KDE Plasma 6 + SDDM (Wayland), PipeWire (ALSA/Pulse/JACK), Firefox, KDE Connect, LocalSend. Plymouth boot splash (Breeze) with quiet boot.
+**Desktop:** KDE Plasma 6 + SDDM (Wayland), PipeWire (ALSA/Pulse/JACK), Firefox, KDE Connect, LocalSend. Plymouth boot splash (adi1090x `black_hud` theme with the NixOS logo added) with quiet boot.
 
 **Gaming:** Steam (gamescope session, gamemode, Remote Play / LAN transfer firewall ports), OBS Studio with VAAPI + Wayland capture plugins, AAGL.
 
