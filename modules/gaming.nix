@@ -7,15 +7,14 @@
   '';
 
   config = lib.mkIf config.cak.gaming.enable {
-    # Pinned to CachyOS LTS (6.18.x) — the intended kernel here. Still a full
-    # CachyOS kernel (BORE, sched-ext/scx_bpfland, tuned config), just on the LTS
-    # base, so no gaming/perf downside. We moved off -latest- because 7.2.0
-    # regressed amdgpu Display Core (v3.2.384 + new HDMI-FRL polling): the Navi 22
-    # HDMI-A-1 connector stopped enumerating -> kwin "no outputs" -> blank SDDM.
-    # -latest- is optional; only switch back once the DC HDMI-FRL fix has landed
-    # in a released kernel, or the display will break again.
+    # CachyOS -latest- (7.2.x). Needs the Samsung TV's "HDMI UHD Color" ON for
+    # HDMI-A-1: with it off the TV sends an HDMI-1.4-style EDID (no HDMI Forum
+    # block) and 7.2's new amdgpu HDMI-FRL status polling (DC v3.2.384) loses the
+    # connector -> kwin "no outputs" -> blank SDDM. Upstream fix is queued for
+    # Linux 7.4. If the display breaks, fall back to
+    # linuxPackages-cachyos-lts-x86_64-v3 (6.18 LTS), which is unaffected.
     boot.kernelPackages =
-      inputs.nix-cachyos-kernel.legacyPackages."x86_64-linux".linuxPackages-cachyos-lts-x86_64-v3;
+      inputs.nix-cachyos-kernel.legacyPackages."x86_64-linux".linuxPackages-cachyos-latest-x86_64-v3;
 
     services.scx = {
       enable = true;
