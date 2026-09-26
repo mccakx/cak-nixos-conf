@@ -18,7 +18,7 @@ All hosts share the common modules in `modules/` and a Home Manager config for u
 
 - `nixpkgs` — `nixos-26.05`
 - `nixpkgs-unstable` — selected packages pulled from unstable
-- `nix-cachyos-kernel` — CachyOS kernel (`linuxPackages-cachyos-lts-x86_64-v3`, pinned to LTS — see `modules/gaming.nix`)
+- `nix-cachyos-kernel` — CachyOS kernel (`linuxPackages-cachyos-latest-x86_64-v3`, 7.2.x — see `modules/gaming.nix` for the TV HDMI caveat)
 - `aagl` — anime-games-launcher (ezKEa/aagl-gtk-on-nix) for gacha games on NixOS
 - `home-manager` — follows nixpkgs
 
@@ -33,7 +33,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 **Virtualization:** Podman (docker-compat, DNS-enabled network) + libvirtd (swtpm, virtiofsd) + virt-manager.
 
 **System:**
-- Gaming hosts (`cak.gaming.enable`): CachyOS LTS kernel + sched_ext (`scx_bpfland`) scheduler
+- Gaming hosts (`cak.gaming.enable`): CachyOS latest kernel + sched_ext (`scx_bpfland`) scheduler
 - Btrfs with zstd compression on `/`, `/home`, `/nix`; monthly auto-scrub; weekly GC keeping 14 days of generations
 - udev rules setting I/O schedulers per disk type (BFQ for HDDs, mq-deadline for SSDs, none for NVMe)
 - NetworkManager; firewall opens SSH (22), WireGuard (51820), LocalSend and Steam ports
