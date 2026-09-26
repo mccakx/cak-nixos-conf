@@ -33,7 +33,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 **Virtualization:** Podman (docker-compat, DNS-enabled network) + libvirtd (swtpm, virtiofsd) + virt-manager.
 
 **System:**
-- Gaming hosts (`cak.gaming.enable`): CachyOS latest kernel + sched_ext (`scx_bpfland`) scheduler
+- Gaming hosts (`cak.gaming.enable`): CachyOS latest kernel + sched_ext (`scx_lavd --performance`) scheduler
 - Btrfs with zstd compression on `/`, `/home`, `/nix`; monthly auto-scrub; weekly GC keeping 14 days of generations
 - udev rules setting I/O schedulers per disk type (BFQ for HDDs, mq-deadline for SSDs, none for NVMe)
 - NetworkManager; firewall opens SSH (22), WireGuard (51820), LocalSend and Steam ports
