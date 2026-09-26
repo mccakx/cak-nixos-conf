@@ -58,6 +58,11 @@ in
 
   hardware.amdgpu.overdrive.enable = true;
 
+  # Load amdgpu in the initrd (early KMS) so Plymouth draws on the real GPU.
+  # Without it amdgpu only loads ~7s in, after switch-root, and its modeset
+  # wipes the splash that Plymouth drew on the EFI simpledrm framebuffer.
+  hardware.amdgpu.initrd.enable = true;
+
   fileSystems."/drive/HDDWin1" = {
     device = "/dev/disk/by-uuid/2B0B486A2FDC92F6";
     fsType = "ntfs-3g";

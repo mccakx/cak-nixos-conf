@@ -16,8 +16,8 @@
   };
 
   # Quiet the console so Plymouth's splash isn't overwritten by kernel/udev logs,
-  # and hand off smoothly to SDDM.
-  boot.kernelParams = [ "quiet" "splash" "rd.udev.log_level=3" "udev.log_priority=3" ];
+  # and hand off smoothly to SDDM. ("splash" is added by boot.plymouth itself.)
+  boot.kernelParams = [ "quiet" "rd.udev.log_level=3" "udev.log_priority=3" ];
   boot.consoleLogLevel = 0;
   boot.initrd.verbose = false;
 
