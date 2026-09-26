@@ -34,7 +34,6 @@ in
       wget
       libarchive
       sof-firmware
-      podman
       podman-compose
       distrobox
       pciutils
@@ -51,13 +50,10 @@ in
       spice-protocol
       spice-vdagent
 
-      virt-manager
-
       (nixpkgsUnstable.protonplus)
       kdePackages.filelight
       kdiskmark
       mono
-      umu-launcher
 
       # Virtualization tools
 #      (virt-manager.overrideAttrs (old: {

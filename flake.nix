@@ -22,7 +22,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-cachyos-kernel, aagl, home-manager, ... } @ inputs:
   let
-    makeConfig = { name, username, hostFile, extraModules ? [] }: nixpkgs.lib.nixosSystem {
+    makeConfig = { username, hostFile, extraModules ? [] }: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
@@ -38,22 +38,18 @@
     };
   in
   {
-    nix.settings = aagl.nixConfig;
     nixosConfigurations = {
-      "nixos-test" = makeConfig { 
-        name = "nixos-test"; 
-        username = "cak"; 
-        hostFile = ./hosts/nixos-test; 
+      "nixos-test" = makeConfig {
+        username = "cak";
+        hostFile = ./hosts/nixos-test;
       };
-      "desktop" = makeConfig { 
-        name = "desktop"; 
-        username = "cak"; 
-        hostFile = ./hosts/desktop; 
+      "desktop" = makeConfig {
+        username = "cak";
+        hostFile = ./hosts/desktop;
       };
-      "delta" = makeConfig { 
-        name = "delta"; 
-        username = "cak"; 
-        hostFile = ./hosts/delta; 
+      "delta" = makeConfig {
+        username = "cak";
+        hostFile = ./hosts/delta;
       };
     };
   };

@@ -54,7 +54,6 @@
   nixpkgs = {
     config = {
       allowUnfree = true;
-      allowedUnfreePredicate = (_: true);
     };
   };
   
