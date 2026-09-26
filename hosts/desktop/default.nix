@@ -75,30 +75,38 @@ in
   #   Settings" button would copy from ~/.config/kwinoutputconfig.json).
   systemd.tmpfiles.rules =
     let
+      # The TV reports a different EDID depending on its "HDMI UHD Color"
+      # setting (on: SAM 3579, HDMI 2.0 / 4K60 RGB; off: SAM 3578, HDMI 1.4
+      # style). KWin matches outputs by EDID, so list both, same mode + scale.
+      # The greeter stays SDR; HDR is only turned on in the Plasma session.
+      tv = edidIdentifier: edidHash: {
+        connectorName = "HDMI-A-1";
+        inherit edidIdentifier edidHash;
+        mode = { width = 1920; height = 1080; refreshRate = 60000; flags = 0; };
+        scale = 1.25;
+        transform = "Normal";
+      };
+      setup = outputIndex: {
+        lidClosed = false;
+        outputs = [{
+          enabled = true;
+          inherit outputIndex;
+          position = { x = 0; y = 0; };
+          priority = 0;
+          replicationSource = "";
+        }];
+      };
       sddmOutputConfig = pkgs.writeText "sddm-kwinoutputconfig.json" (builtins.toJSON [
         {
           name = "outputs";
-          data = [{
-            connectorName = "HDMI-A-1";
-            edidIdentifier = "SAM 3578 16780800 1 2017 0";
-            edidHash = "0335e1fb20d9d5a6f32b2231cfcfb407";
-            mode = { width = 1920; height = 1080; refreshRate = 60000; flags = 0; };
-            scale = 1.25;
-            transform = "Normal";
-          }];
+          data = [
+            (tv "SAM 3579 16780800 1 2017 0" "56f32d5c47ab128c036e3429b3ab1e98") # UHD Color on
+            (tv "SAM 3578 16780800 1 2017 0" "0335e1fb20d9d5a6f32b2231cfcfb407") # UHD Color off
+          ];
         }
         {
           name = "setups";
-          data = [{
-            lidClosed = false;
-            outputs = [{
-              enabled = true;
-              outputIndex = 0;
-              position = { x = 0; y = 0; };
-              priority = 0;
-              replicationSource = "";
-            }];
-          }];
+          data = [ (setup 0) (setup 1) ];
         }
       ]);
     in [
