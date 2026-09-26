@@ -14,7 +14,8 @@
       startAgent = true;
       extraConfig = ''
         Host github.com
-          IdentityFile ~/Downloads/SSH-Keys/github/id_ed25519
+          IdentityFile ~/.ssh/github_ed25519
+          IdentitiesOnly yes
       '';
     };
     localsend = {
