@@ -63,6 +63,49 @@ in
   # wipes the splash that Plymouth drew on the EFI simpledrm framebuffer.
   hardware.amdgpu.initrd.enable = true;
 
+  # The 4K Samsung on HDMI-A-1 is run at 1920x1080 @ 125% (the GPU can't game
+  # at 4K). Match that on the boot path too:
+  # - Plymouth: start the console at 1080p and enlarge the splash 125%.
+  boot.kernelParams = [ "video=HDMI-A-1:1920x1080@60" ];
+  cak.plymouth.scale = 125;
+
+  # - SDDM: the greeter's KWin (runs as user sddm) has no display settings of
+  #   its own and falls back to native 4K at 100%. Give it the same output
+  #   config as the Plasma session (what the SDDM KCM's "Apply Plasma
+  #   Settings" button would copy from ~/.config/kwinoutputconfig.json).
+  systemd.tmpfiles.rules =
+    let
+      sddmOutputConfig = pkgs.writeText "sddm-kwinoutputconfig.json" (builtins.toJSON [
+        {
+          name = "outputs";
+          data = [{
+            connectorName = "HDMI-A-1";
+            edidIdentifier = "SAM 3578 16780800 1 2017 0";
+            edidHash = "0335e1fb20d9d5a6f32b2231cfcfb407";
+            mode = { width = 1920; height = 1080; refreshRate = 60000; flags = 0; };
+            scale = 1.25;
+            transform = "Normal";
+          }];
+        }
+        {
+          name = "setups";
+          data = [{
+            lidClosed = false;
+            outputs = [{
+              enabled = true;
+              outputIndex = 0;
+              position = { x = 0; y = 0; };
+              priority = 0;
+              replicationSource = "";
+            }];
+          }];
+        }
+      ]);
+    in [
+      "d /var/lib/sddm/.config 0755 sddm sddm -"
+      "L+ /var/lib/sddm/.config/kwinoutputconfig.json - - - - ${sddmOutputConfig}"
+    ];
+
   fileSystems."/drive/HDDWin1" = {
     device = "/dev/disk/by-uuid/2B0B486A2FDC92F6";
     fsType = "ntfs-3g";
