@@ -61,7 +61,7 @@ in
   fileSystems."/drive/HDDWin1" = {
     device = "/dev/disk/by-uuid/2B0B486A2FDC92F6";
     fsType = "ntfs-3g";
-    options = ["uid=1000" "windows_names"];
+    options = ["uid=1000" "windows_names" "nofail"];
   };
 
   fileSystems."/drive/SSDLinux1" = {

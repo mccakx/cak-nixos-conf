@@ -23,7 +23,7 @@ in
   fileSystems."/drive/SSD1" = {
     device = "/dev/disk/by-uuid/F6964AB9964A79DF";
     fsType = "ntfs-3g";
-    options = [ "rw uid=1000" ];
+    options = [ "rw" "uid=1000" "nofail" ];
   };
 
   #nixpkgs.hostPlatform = {

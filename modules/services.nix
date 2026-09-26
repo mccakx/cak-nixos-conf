@@ -17,7 +17,10 @@
       pulse.enable = true;
       jack.enable = true;
     };
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings.PermitRootLogin = "no";
+    };
     btrfs.autoScrub = {
       enable = true;
       interval = "monthly";

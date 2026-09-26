@@ -1,14 +1,5 @@
 { pkgs, lib, config, inputs, ...} : {
 
-  security = {
-    rtkit = {
-      enable = true;
-      };
-    pam = {
-      sshAgentAuth.enable = true;
-      services = {
-      };
-    };
-  };
+  security.rtkit.enable = true;
 
 }
