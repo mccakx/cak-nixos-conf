@@ -1,4 +1,27 @@
 { pkgs, lib, config, inputs, ...} :
+let
+  # White NixOS snowflake, drawn under the HUD animation.
+  distroLogo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake-white.png";
+
+  # adi1090x "black_hud" theme, patched to also show the distro logo.
+  # (The package's installPhase doesn't run postInstall hooks, so append to it.)
+  blackHud = (pkgs.adi1090x-plymouth-themes.override {
+    selected_themes = [ "black_hud" ];
+  }).overrideAttrs (old: {
+    installPhase = old.installPhase + ''
+      theme=$out/share/plymouth/themes/black_hud
+      cp ${distroLogo} $theme/logo.png
+      cat >> $theme/black_hud.script <<'EOF'
+
+      //------------------------------------- Distro logo -------------------------------
+      logo.image = Image("logo.png");
+      logo.sprite = Sprite(logo.image);
+      logo.sprite.SetX(Window.GetX() + Window.GetWidth(0) / 2 - logo.image.GetWidth() / 2);
+      logo.sprite.SetY(Window.GetY() + Window.GetHeight(0) / 2 + flyingman_image[0].GetHeight() / 2 + 48);
+      EOF
+    '';
+  });
+in
 {
   boot.loader = {
     systemd-boot = {
@@ -8,11 +31,13 @@
     efi.canTouchEfiVariables = true;
   };
 
-  # Graphical boot splash. Breeze theme to match Plasma 6 / SDDM.
+  # Graphical boot splash: adi1090x black_hud + NixOS logo
+  # (https://github.com/adi1090x/plymouth-themes).
   boot.plymouth = {
     enable = true;
-    theme = "breeze";
-    themePackages = [ pkgs.kdePackages.breeze-plymouth ];
+    theme = "black_hud";
+    themePackages = [ blackHud ];
+    logo = distroLogo;
   };
 
   # Quiet the console so Plymouth's splash isn't overwritten by kernel/udev logs,
