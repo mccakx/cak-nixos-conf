@@ -7,7 +7,7 @@ Personal NixOS configuration flake ("McCak NixOS Flake"). The whole system — k
 | Host | Description |
 |---|---|
 | `nixos-test` | QEMU/KVM VM guest — zen kernel, no gaming stack, zram swap (qemu-guest-agent, spice-vdagent) |
-| `desktop` | Main machine — AMD GPU (LACT with overdrive, nvtop-amd), LAN bridge `br0` at 10.0.1.3 managed by NetworkManager, NTFS drive at `/drive/HDDWin1`, ext4 drive at `/drive/SSDLinux1`, AAGL launchers |
+| `desktop` | Main machine — AMD GPU (LACT with overdrive, nvtop-amd), LAN bridge `br0` at 10.0.1.3 managed by NetworkManager, NTFS drive at `/drive/HDDWin1`, ext4 drive at `/drive/SSDLinux1`, AAGL launchers — 4K screen run at 1080p @ 125%, with Plymouth and the SDDM greeter set to match |
 | `delta` | Secondary machine — AMD GPU (nvtop-amd), MSI tooling (mcontrolcenter), NTFS drive at `/drive/SSD1` |
 
 Data drives are mounted with `nofail`, so a missing drive doesn't block boot.
