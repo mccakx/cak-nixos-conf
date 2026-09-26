@@ -3,7 +3,7 @@
 {
   options.cak.gaming.enable = lib.mkEnableOption ''
     gaming stack: Steam, gamescope, gamemode, OBS, Proton tooling,
-    CachyOS kernel + scx_bpfland scheduler
+    CachyOS kernel + scx_lavd scheduler
   '';
 
   config = lib.mkIf config.cak.gaming.enable {
@@ -16,9 +16,13 @@
     boot.kernelPackages =
       inputs.nix-cachyos-kernel.legacyPackages."x86_64-linux".linuxPackages-cachyos-latest-x86_64-v3;
 
+    # lavd --performance beat bpfland and cosmos in a Cities: Skylines II A/B
+    # test (2026-09-26): ~30% less run-queue wait, ~3x fewer preemptions,
+    # more main-thread time and higher GPU utilisation.
     services.scx = {
       enable = true;
-      scheduler = "scx_bpfland";
+      scheduler = "scx_lavd";
+      extraArgs = [ "--performance" ];
     };
 
     programs.steam = {
