@@ -3,8 +3,8 @@
 # EasyEffects on the desktop's analog out (ALC892 -> Harman Kardon SoundSticks 4).
 #
 # Chain: equalizer -> stereo tools -> compressor -> autogain -> limiter
-# - equalizer:    32-band "cinematic" voicing: deeper sub, less low-mid mud, a
-#                 touch of dialogue, softened harshness, more air. Runs first so the
+# - equalizer:    32-band "cinematic" voicing: deeper sub, less low-mid mud,
+#                 fuller mids, softened harshness and sibilance, more air. Runs first so the
 #                 loudness stages measure what you actually hear.
 # - stereo tools: widens the stereo image a little (more side signal) for a
 #                 roomier, surround-ish feel. Not real Atmos: that needs
@@ -50,10 +50,10 @@ in
           mute = false;
         };
         # 31 bells (Q 2) on a log grid 32 Hz..18 kHz, gains fitted numerically
-        # (RBJ biquads, 48 kHz) to this target curve, within 0.65 dB 40 Hz-16 kHz:
-        #   +2.5 dB sub shelf @70 Hz, -3 dB @250 Hz (mud), +1 dB @1.8 kHz
-        #   (dialogue), -0.5 dB @3.5 kHz (harshness), +1 dB @5 kHz (detail),
-        #   +3.5 dB air shelf @7 kHz.
+        # (RBJ biquads, 48 kHz) to this target curve, within 0.45 dB 40 Hz-16 kHz:
+        #   +2.5 dB sub shelf @70 Hz, -3 dB @250 Hz (mud), +1.5 dB broad @900 Hz
+        #   (mids), +1 dB @1.8 kHz (dialogue), -0.5 dB @3.5 kHz (harshness),
+        #   -2 dB @7 kHz (sibilance, sharp "s"), +3 dB air shelf @11 kHz.
         # Shape it by editing the gains here, not in the GUI (read-only preset).
         bell = frequency: gain: band "Bell" frequency gain 2.0;
         bands = {
@@ -65,30 +65,30 @@ in
           band5   = bell     74.4 0.4;
           band6   = bell     91.9 0.3;
           band7   = bell    113.5 0.3;
-          band8   = bell    140.2 0.2;
-          band9   = bell    173.2 (-0.4);
+          band8   = bell    140.2 0.4;
+          band9   = bell    173.2 0.0;
           band10  = bell    213.9 (-1.3);
-          band11  = bell    264.2 (-1.5);
-          band12  = bell    326.2 (-0.9);
-          band13  = bell    402.9 (-0.2);
-          band14  = bell    497.6 0.1;
-          band15  = bell    614.5 0.1;
-          band16  = bell    758.9 0.0;
-          band17  = bell    937.3 0.1;
-          band18  = bell   1157.6 0.2;
-          band19  = bell   1429.6 0.4;
-          band20  = bell   1765.6 0.5;
-          band21  = bell   2180.5 0.5;
+          band11  = bell    264.2 (-1.8);
+          band12  = bell    326.2 (-0.6);
+          band13  = bell    402.9 0.4;
+          band14  = bell    497.6 0.5;
+          band15  = bell    614.5 0.5;
+          band16  = bell    758.9 0.6;
+          band17  = bell    937.3 0.6;
+          band18  = bell   1157.6 0.7;
+          band19  = bell   1429.6 0.8;
+          band20  = bell   1765.6 0.7;
+          band21  = bell   2180.5 0.6;
           band22  = bell   2693.0 0.4;
-          band23  = bell   3325.9 (-0.3);
-          band24  = bell   4107.5 0.5;
-          band25  = bell   5072.8 1.1;
-          band26  = bell   6265.0 0.8;
-          band27  = bell   7737.3 0.7;
-          band28  = bell   9555.7 0.9;
-          band29  = bell  11801.3 1.3;
-          band30  = bell  14574.8 1.8;
-          band31  = bell  18000.0 2.6;
+          band23  = bell   3325.9 (-0.4);
+          band24  = bell   4107.5 0.1;
+          band25  = bell   5072.8 0.5;
+          band26  = bell   6265.0 (-1.1);
+          band27  = bell   7737.3 (-0.9);
+          band28  = bell   9555.7 0.6;
+          band29  = bell  11801.3 1.0;
+          band30  = bell  14574.8 1.3;
+          band31  = bell  18000.0 1.9;
         };
       in {
         blocklist = [ ];
