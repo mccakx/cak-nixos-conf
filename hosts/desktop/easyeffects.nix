@@ -50,9 +50,10 @@ in
           mute = false;
         };
         # 31 bells (Q 2) on a log grid 32 Hz..18 kHz, gains fitted numerically
-        # (RBJ biquads, 48 kHz) to this target curve, within 0.35 dB 40 Hz-16 kHz:
+        # (RBJ biquads, 48 kHz) to this target curve, within 0.65 dB 40 Hz-16 kHz:
         #   +2.5 dB sub shelf @70 Hz, -3 dB @250 Hz (mud), +1 dB @1.8 kHz
-        #   (dialogue), -1.5 dB @3.5 kHz (harshness), +2 dB air shelf @8 kHz.
+        #   (dialogue), -0.5 dB @3.5 kHz (harshness), +1 dB @5 kHz (detail),
+        #   +3.5 dB air shelf @7 kHz.
         # Shape it by editing the gains here, not in the GUI (read-only preset).
         bell = frequency: gain: band "Bell" frequency gain 2.0;
         bands = {
@@ -76,18 +77,18 @@ in
           band17  = bell    937.3 0.1;
           band18  = bell   1157.6 0.2;
           band19  = bell   1429.6 0.4;
-          band20  = bell   1765.6 0.6;
-          band21  = bell   2180.5 0.6;
-          band22  = bell   2693.0 0.0;
-          band23  = bell   3325.9 (-0.9);
-          band24  = bell   4107.5 (-0.6);
-          band25  = bell   5072.8 0.2;
-          band26  = bell   6265.0 0.4;
-          band27  = bell   7737.3 0.4;
-          band28  = bell   9555.7 0.5;
-          band29  = bell  11801.3 0.7;
-          band30  = bell  14574.8 1.0;
-          band31  = bell  18000.0 1.4;
+          band20  = bell   1765.6 0.5;
+          band21  = bell   2180.5 0.5;
+          band22  = bell   2693.0 0.4;
+          band23  = bell   3325.9 (-0.3);
+          band24  = bell   4107.5 0.5;
+          band25  = bell   5072.8 1.1;
+          band26  = bell   6265.0 0.8;
+          band27  = bell   7737.3 0.7;
+          band28  = bell   9555.7 0.9;
+          band29  = bell  11801.3 1.3;
+          band30  = bell  14574.8 1.8;
+          band31  = bell  18000.0 2.6;
         };
       in {
         blocklist = [ ];
