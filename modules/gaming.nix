@@ -53,7 +53,6 @@
       protontricks
       bottles
       umu-launcher
-      jamesdsp
     ];
   };
 }
