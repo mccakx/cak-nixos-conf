@@ -1,4 +1,4 @@
-{ ... } :
+{ pkgs, ... } :
 
 # EasyEffects on the desktop's analog out (ALC892 -> Harman Kardon SoundSticks 4).
 #
@@ -15,10 +15,22 @@
 # The preset files are read-only Nix store links: to experiment, tweak in the
 # GUI and "Save as" a new preset name, then copy the values back here.
 # Keys not set below fall back to EasyEffects' defaults.
+let
+  # EasyEffects 8 only forwards --load-preset over its local socket to an
+  # already-running instance, so the HM module's `preset` (passed to the
+  # service itself) is silently dropped. Load it from a client once the
+  # service is listening instead. Offscreen Qt: the client needs no window.
+  loadPreset = pkgs.writeShellScript "easyeffects-load-preset" ''
+    export QT_QPA_PLATFORM=offscreen
+    sleep 3
+    exec ${pkgs.easyeffects}/bin/easyeffects --load-preset SoundSticks4
+  '';
+in
 {
+  home-manager.users.cak.systemd.user.services.easyeffects.Service.ExecStartPost = "${loadPreset}";
+
   home-manager.users.cak.services.easyeffects = {
     enable = true;
-    preset = "SoundSticks4";
 
     extraPresets.SoundSticks4.output =
       let
@@ -87,7 +99,7 @@
           threshold = -1.0;
           lookahead = 5.0;
           attack = 5.0;
-          release = 50.0;
+          release = 20.0;     # max 20 ms
           alr = false;
         };
       };
