@@ -31,8 +31,8 @@
         };
         bands = {
           band0 = band "Hi-pass"  25.0     0.0  0.7;  # sub rumble the woofer can't play cleanly
-          band1 = band "Bell"     200.0   -2.5  1.2;  # boomy / muddy low-mids
-          band2 = band "Bell"     450.0   -1.0  1.4;  # boxiness
+          band1 = band "Bell"     200.0  (-2.5) 1.2;  # boomy / muddy low-mids
+          band2 = band "Bell"     450.0  (-1.0) 1.4;  # boxiness
           band3 = band "Bell"     2500.0   1.5  1.0;  # presence, dialogue clarity
           band4 = band "Hi-shelf" 10000.0  1.5  0.7;  # air
         };
