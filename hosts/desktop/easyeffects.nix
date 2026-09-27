@@ -132,11 +132,25 @@ in
           threshold = -28.0;
           ratio = 3.5;
           knee = -9.0;
-          attack = 10.0;     # fast enough to catch peaks, slow enough to keep punch
-          release = 200.0;
+          attack = 15.0;
+          release = 250.0;
           makeup = 0.0;
           dry = -80.01;   # fully wet
           wet = 0.0;
+          # Detector only: bass carries most of the energy in music, so a
+          # full-range peak detector ducked everything on every kick/bass note
+          # ("sounds muted"). High-pass the sidechain and use RMS so it reacts
+          # to the mids/highs level instead. The audio itself stays full range.
+          hpf-mode = "24 dB/oct";
+          hpf-frequency = 150.0;
+          sidechain = {
+            type = "Feed-forward";
+            mode = "RMS";
+            source = "Middle";
+            reactivity = 20.0;   # ms RMS window
+            lookahead = 0.0;
+            preamp = 0.0;
+          };
         };
 
         "limiter#0" = {
