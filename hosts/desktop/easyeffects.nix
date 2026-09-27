@@ -3,8 +3,8 @@
 # EasyEffects on the desktop's analog out (ALC892 -> Harman Kardon SoundSticks 4).
 #
 # Chain: equalizer -> stereo tools -> compressor -> autogain -> limiter
-# - equalizer:    "cinematic" voicing: deeper sub, less low-mid mud, a touch
-#                 of dialogue, softened harshness, more air. Runs first so the
+# - equalizer:    32-band "cinematic" voicing: deeper sub, less low-mid mud, a
+#                 touch of dialogue, softened harshness, more air. Runs first so the
 #                 loudness stages measure what you actually hear.
 # - stereo tools: widens the stereo image a little (more side signal) for a
 #                 roomier, surround-ish feel. Not real Atmos: that needs
@@ -49,13 +49,45 @@ in
           solo = false;
           mute = false;
         };
+        # 31 bells (Q 2) on a log grid 32 Hz..18 kHz, gains fitted numerically
+        # (RBJ biquads, 48 kHz) to this target curve, within 0.35 dB 40 Hz-16 kHz:
+        #   +2.5 dB sub shelf @70 Hz, -3 dB @250 Hz (mud), +1 dB @1.8 kHz
+        #   (dialogue), -1.5 dB @3.5 kHz (harshness), +2 dB air shelf @8 kHz.
+        # Shape it by editing the gains here, not in the GUI (read-only preset).
+        bell = frequency: gain: band "Bell" frequency gain 2.0;
         bands = {
-          band0 = band "Hi-pass"  25.0     0.0  0.7;  # sub rumble the woofer can't play cleanly
-          band1 = band "Lo-shelf" 70.0     2.0  0.7;  # deep, cinematic low end from the sub
-          band2 = band "Bell"     250.0  (-3.0) 1.0;  # boomy / muddy low-mids
-          band3 = band "Bell"     1800.0   1.0  1.2;  # dialogue
-          band4 = band "Bell"     3500.0 (-1.5) 2.0;  # harshness / edge
-          band5 = band "Hi-shelf" 8000.0   2.0  0.7;  # air, "sparkle"
+          band0   = band "Hi-pass" 25.0 0.0 0.7;  # sub rumble the woofer can't play cleanly
+          band1   = bell     32.0 1.6;
+          band2   = bell     39.5 0.4;
+          band3   = bell     48.8 0.6;
+          band4   = bell     60.3 0.5;
+          band5   = bell     74.4 0.4;
+          band6   = bell     91.9 0.3;
+          band7   = bell    113.5 0.3;
+          band8   = bell    140.2 0.2;
+          band9   = bell    173.2 (-0.4);
+          band10  = bell    213.9 (-1.3);
+          band11  = bell    264.2 (-1.5);
+          band12  = bell    326.2 (-0.9);
+          band13  = bell    402.9 (-0.2);
+          band14  = bell    497.6 0.1;
+          band15  = bell    614.5 0.1;
+          band16  = bell    758.9 0.0;
+          band17  = bell    937.3 0.1;
+          band18  = bell   1157.6 0.2;
+          band19  = bell   1429.6 0.4;
+          band20  = bell   1765.6 0.6;
+          band21  = bell   2180.5 0.6;
+          band22  = bell   2693.0 0.0;
+          band23  = bell   3325.9 (-0.9);
+          band24  = bell   4107.5 (-0.6);
+          band25  = bell   5072.8 0.2;
+          band26  = bell   6265.0 0.4;
+          band27  = bell   7737.3 0.4;
+          band28  = bell   9555.7 0.5;
+          band29  = bell  11801.3 0.7;
+          band30  = bell  14574.8 1.0;
+          band31  = bell  18000.0 1.4;
         };
       in {
         blocklist = [ ];
@@ -67,7 +99,7 @@ in
           output-gain = 0.0;
           mode = "IIR";
           split-channels = false;
-          num-bands = 6;
+          num-bands = 32;
           left = bands;
           right = bands;
         };
@@ -97,11 +129,11 @@ in
           input-gain = 0.0;
           output-gain = 0.0;
           mode = "Downward";
-          threshold = -24.0;
-          ratio = 2.5;
+          threshold = -28.0;
+          ratio = 3.5;
           knee = -9.0;
-          attack = 15.0;     # fast enough to catch peaks, slow enough to keep punch
-          release = 250.0;
+          attack = 10.0;     # fast enough to catch peaks, slow enough to keep punch
+          release = 200.0;
           makeup = 0.0;
           dry = -80.01;   # fully wet
           wet = 0.0;
