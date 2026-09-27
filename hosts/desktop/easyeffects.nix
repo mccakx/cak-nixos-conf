@@ -2,18 +2,21 @@
 
 # EasyEffects on the desktop's analog out (ALC892 -> Harman Kardon SoundSticks 4).
 #
-# Chain: equalizer -> stereo tools -> autogain -> compressor -> limiter
+# Chain: equalizer -> stereo tools -> compressor -> autogain -> limiter
 # - equalizer:    "cinematic" voicing: deeper sub, less low-mid mud, a touch
 #                 of dialogue, softened harshness, more air. Runs first so the
 #                 loudness stages measure what you actually hear.
 # - stereo tools: widens the stereo image a little (more side signal) for a
 #                 roomier, surround-ish feel. Not real Atmos: that needs
 #                 height/surround speakers or headphone HRTF.
-# - autogain:     EBU R128 loudness normalisation towards -21 LUFS, using the
+# - compressor:   runs BEFORE autogain on purpose. Autogain only raises the
+#                 gain if the current peak won't clip (autogain.cpp: gain *
+#                 peak < 1), so a quiet video with sharp peaks (peak-to-loudness
+#                 gap > |target|) never gets boosted. Squashing peaks first
+#                 gives it room. Also evens out dialogue vs. explosions.
+# - autogain:     EBU R128 loudness normalisation towards -23 LUFS, using the
 #                 short-term + integrated loudness over 30 s so it rides slowly
 #                 instead of pumping on every loud moment.
-# - compressor:   light 2:1, slow attack/release, only evens out big jumps
-#                 (quiet dialogue vs. explosions).
 # - limiter:      -1.5 dB true-peak safety net; with the settings above it
 #                 should rarely engage.
 #
@@ -56,7 +59,7 @@ in
         };
       in {
         blocklist = [ ];
-        plugins_order = [ "equalizer#0" "stereo_tools#0" "autogain#0" "compressor#0" "limiter#0" ];
+        plugins_order = [ "equalizer#0" "stereo_tools#0" "compressor#0" "autogain#0" "limiter#0" ];
 
         "equalizer#0" = {
           bypass = false;
@@ -82,7 +85,7 @@ in
           bypass = false;
           input-gain = 0.0;
           output-gain = 0.0;
-          target = -21.0;              # LUFS
+          target = -23.0;              # LUFS
           reference = "Geometric Mean (SI)";
           maximum-history = 30;        # seconds of loudness history
           silence-threshold = -70.0;   # don't pump up silence
@@ -94,11 +97,11 @@ in
           input-gain = 0.0;
           output-gain = 0.0;
           mode = "Downward";
-          threshold = -20.0;
-          ratio = 2.0;
+          threshold = -24.0;
+          ratio = 2.5;
           knee = -9.0;
-          attack = 40.0;
-          release = 400.0;
+          attack = 15.0;     # fast enough to catch peaks, slow enough to keep punch
+          release = 250.0;
           makeup = 0.0;
           dry = -80.01;   # fully wet
           wet = 0.0;
