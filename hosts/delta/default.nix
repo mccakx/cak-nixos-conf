@@ -1,9 +1,6 @@
 { config, lib, pkgs, inputs, ... } :
 
-let
-  nixpkgsUnstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux";
-in
-  {
+{
 
   imports =
     [
@@ -15,16 +12,22 @@ in
 
   cak.gaming.enable = true;
 
+  # MSI laptop control (fan curves, battery threshold, cooler boost).
+  # MControlCenter is in stable 26.05. Its root helper is a D-Bus system
+  # service, so the package must also be registered with dbus or the GUI
+  # can't read/write the EC. It uses the msi-ec driver below
+  # and only falls back to raw ec_sys writes if msi-ec doesn't load.
   environment.systemPackages = with pkgs; [
     nvtopPackages.amd
-    (nixpkgsUnstable.mcontrolcenter)
+    mcontrolcenter
   ];
+  services.dbus.packages = [ pkgs.mcontrolcenter ];
 
-  fileSystems."/drive/SSD1" = {
-    device = "/dev/disk/by-uuid/F6964AB9964A79DF";
-    fsType = "ntfs-3g";
-    options = [ "rw" "uid=1000" "nofail" ];
-  };
+  # Out-of-tree msi-ec (BeardOverflow) instead of the in-kernel one: mainline
+  # msi-ec only knows ~27 EC firmware versions, this one ~140. Installed into
+  # the module tree's updates/ dir, so it takes priority over the in-tree module.
+  boot.kernelModules = [ "msi-ec" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.msi-ec ];
 
   #nixpkgs.hostPlatform = {
   #  gcc.arch = "znver3";
@@ -63,6 +66,6 @@ in
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 
 }
