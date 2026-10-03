@@ -38,6 +38,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 - Btrfs with zstd compression on `/`, `/home`, `/nix`; monthly auto-scrub; weekly GC keeping 14 days of generations
 - udev rules setting I/O schedulers per disk type (BFQ for HDDs, mq-deadline for SSDs, none for NVMe)
 - NetworkManager; firewall opens SSH (22), WireGuard (51820), LocalSend and Steam ports
+- Printing: CUPS with driverless IPP (Avahi for network, ipp-usb for USB) + gutenprint/hplip/splix/brlaser/epson-escpr(2) drivers
 - OpenSSH with root login disabled
 - Custom eduroam patch applied to wpa_supplicant (`modules/eduroam.patch`)
 - plasma-workspace override merging XDG_DATA_DIRS into one directory (fixes app discovery under the Qt wrapper)
