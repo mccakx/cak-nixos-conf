@@ -88,7 +88,7 @@ mount -o subvol=root,compress=zstd:3 /dev/disk/by-label/delta /mnt
 mkdir -p /mnt/{home,nix,boot}
 mount -o subvol=home,compress=zstd:3 /dev/disk/by-label/delta /mnt/home
 mount -o subvol=nix,compress=zstd:3,noatime /dev/disk/by-label/delta /mnt/nix
-mount -o fmask=0022,dmask=0022 /dev/disk/by-label/BOOT /mnt/boot
+mount -o fmask=0077,dmask=0077 /dev/disk/by-label/BOOT /mnt/boot
 
 # sanity check: compare initrd modules with what the hardware reports
 nixos-generate-config --root /mnt --show-hardware-config | grep -A1 availableKernelModules
