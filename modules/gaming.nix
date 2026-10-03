@@ -35,6 +35,10 @@
 
     programs.gamescope.enable = true;
     programs.gamemode.enable = true;
+
+    # RGB control (keyboards, mice, GPUs, RAM). Runs the OpenRGB server as a
+    # system service and installs its udev rules so the GUI works without root.
+    services.hardware.openrgb.enable = true;
     programs.obs-studio = {
       enable = true;
       plugins = with pkgs.obs-studio-plugins; [

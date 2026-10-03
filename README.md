@@ -28,7 +28,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 
 **Desktop:** `cak.desktop` picks KDE Plasma 6 + SDDM (default) or GNOME + GDM (delta), both Wayland. PipeWire (ALSA/Pulse/JACK), Firefox, KDE Connect (GSConnect on GNOME), LocalSend. Plymouth boot splash (adi1090x `black_hud` theme with the NixOS logo added) with quiet boot.
 
-**Gaming:** Steam (gamescope session, gamemode, Remote Play / LAN transfer firewall ports), OBS Studio with VAAPI + Wayland capture plugins, AAGL.
+**Gaming:** Steam (gamescope session, gamemode, OpenRGB, Remote Play / LAN transfer firewall ports), OBS Studio with VAAPI + Wayland capture plugins, AAGL.
 
 **Virtualization:** Podman (docker-compat, DNS-enabled network) + libvirtd (swtpm, virtiofsd) + virt-manager.
 
