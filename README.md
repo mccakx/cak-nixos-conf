@@ -26,7 +26,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 
 ## What's configured
 
-**Desktop:** KDE Plasma 6 + SDDM (Wayland), PipeWire (ALSA/Pulse/JACK), Firefox, KDE Connect, LocalSend. Plymouth boot splash (adi1090x `black_hud` theme with the NixOS logo added) with quiet boot.
+**Desktop:** `cak.desktop` picks KDE Plasma 6 + SDDM (default) or GNOME + GDM (delta), both Wayland. PipeWire (ALSA/Pulse/JACK), Firefox, KDE Connect (GSConnect on GNOME), LocalSend. Plymouth boot splash (adi1090x `black_hud` theme with the NixOS logo added) with quiet boot.
 
 **Gaming:** Steam (gamescope session, gamemode, Remote Play / LAN transfer firewall ports), OBS Studio with VAAPI + Wayland capture plugins, AAGL.
 
@@ -34,6 +34,7 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 
 **System:**
 - Gaming hosts (`cak.gaming.enable`): CachyOS latest kernel + sched_ext (`scx_lavd --performance`) scheduler
+- Laptops (`cak.laptop.enable`): power-profiles-daemon, upower, fwupd, zram swap, and `scx_lavd --autopower` (follows the power profile) instead of `--performance`
 - Btrfs with zstd compression on `/`, `/home`, `/nix`; monthly auto-scrub; weekly GC keeping 14 days of generations
 - udev rules setting I/O schedulers per disk type (BFQ for HDDs, mq-deadline for SSDs, none for NVMe)
 - NetworkManager; firewall opens SSH (22), WireGuard (51820), LocalSend and Steam ports
