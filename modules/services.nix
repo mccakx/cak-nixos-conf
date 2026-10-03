@@ -5,11 +5,7 @@
       enable = true;
       xkb.layout = "us";
     };
-    displayManager = {
-    	sddm.enable = true;
-    	sddm.wayland.enable = true;
-    	};
-    desktopManager.plasma6.enable = true;
+    # display manager + desktop: modules/desktop.nix (cak.desktop)
     pipewire = {
       enable = true;
       alsa.enable = true;

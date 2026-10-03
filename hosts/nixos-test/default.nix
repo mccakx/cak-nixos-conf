@@ -12,7 +12,7 @@
   # ------------------------------------------------------------------
   # Lightweight test VM: no gaming stack (cak.gaming.enable = false),
   # zen kernel. Desktop is Plasma 6 on Wayland, inherited from
-  # modules/services.nix (SDDM Wayland + plasma6), matching the desktop
+  # modules/desktop.nix (cak.desktop default: SDDM Wayland + plasma6), matching the desktop
   # and delta hosts. Accessed via the virt-manager / Spice console.
   # ------------------------------------------------------------------
 

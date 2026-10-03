@@ -51,7 +51,6 @@ in
       spice-vdagent
 
       (nixpkgsUnstable.protonplus)
-      kdePackages.filelight
       kdiskmark
       mono
 

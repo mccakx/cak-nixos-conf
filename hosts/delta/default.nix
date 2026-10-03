@@ -11,6 +11,11 @@
   networking.hostName = "delta"; # Define your hostname.
 
   cak.gaming.enable = true;
+  cak.laptop.enable = true;
+  cak.desktop = "gnome";
+
+  # Hibernate to the 32G swap partition (16G RAM)
+  boot.resumeDevice = "/dev/disk/by-label/swap";
 
   # MSI laptop control (fan curves, battery threshold, cooler boost).
   # MControlCenter is in stable 26.05. Its root helper is a D-Bus system
