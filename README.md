@@ -8,7 +8,7 @@ Personal NixOS configuration flake ("McCak NixOS Flake"). The whole system — k
 |---|---|
 | `nixos-test` | QEMU/KVM VM guest — zen kernel, no gaming stack, zram swap (qemu-guest-agent, spice-vdagent) |
 | `desktop` | Main machine — AMD GPU (LACT with overdrive, nvtop-amd), LAN bridge `br0` at 10.0.1.3 managed by NetworkManager, NTFS drive at `/drive/HDDWin1`, ext4 drive at `/drive/SSDLinux1`, AAGL launchers — 4K screen run at 1080p @ 125%, with Plymouth and the SDDM greeter set to match |
-| `delta` | MSI laptop — AMD GPU (nvtop-amd), MControlCenter + out-of-tree msi-ec driver; single unencrypted disk mounted by label (see "Installing delta") |
+| `delta` | MSI laptop — AMD GPU (nvtop-amd), GNOME, laptop module (power profiles, zram, hibernate), MControlCenter + out-of-tree msi-ec driver; single unencrypted disk mounted by label (see "Installing delta") |
 
 Data drives are mounted with `nofail`, so a missing drive doesn't block boot.
 
@@ -65,12 +65,12 @@ minimal ISO, get online (`nmtui` for Wi-Fi), then as root:
 ```bash
 lsblk                          # find the disk, e.g. /dev/nvme0n1
 DISK=/dev/nvme0n1              # <-- double-check: everything on it is erased
-SWAPEND=17GiB                  # 1GiB ESP + 16GiB swap; swap >= RAM for hibernation
+SWAPEND=34GiB                  # 2GiB ESP + 32GiB swap (>= 16G RAM, for hibernation)
 
 wipefs -a $DISK
 parted -s $DISK -- mklabel gpt \
-  mkpart ESP fat32 1MiB 1GiB set 1 esp on \
-  mkpart swap linux-swap 1GiB $SWAPEND \
+  mkpart ESP fat32 1MiB 2GiB set 1 esp on \
+  mkpart swap linux-swap 2GiB $SWAPEND \
   mkpart nixos btrfs $SWAPEND 100%
 # nvme partitions are ${DISK}p1..p3, sata ones ${DISK}1..3
 P=${DISK}p

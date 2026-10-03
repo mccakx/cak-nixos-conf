@@ -2,9 +2,11 @@
 
   imports = [
     ./boot.nix
+    ./desktop.nix
     ./environment.nix
     ./fonts.nix
     ./gaming.nix
+    ./laptop.nix
     ./networking.nix
     ./programs.nix
     ./security.nix
