@@ -8,7 +8,6 @@ in
     [
       ./hardware-configuration.nix
       ../../modules/system.nix
-      ./easyeffects.nix
       #inputs.aagl.nixosModules.default
     ];
 
