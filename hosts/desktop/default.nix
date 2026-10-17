@@ -45,6 +45,9 @@ in
         slave-type = "bridge";
         autoconnect = true;
       };
+      # NM owns the NIC, so WoL must be set here (networking.interfaces.*.wakeOnLan
+      # is ignored). 64 = NM_SETTING_WIRED_WAKE_ON_LAN_MAGIC.
+      ethernet.wake-on-lan = 64;
     };
   };
 
