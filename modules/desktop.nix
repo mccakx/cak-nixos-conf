@@ -5,9 +5,9 @@ let
 in
 {
   options.cak.desktop = lib.mkOption {
-    type = lib.types.enum [ "plasma" "gnome" ];
+    type = lib.types.enum [ "plasma" "gnome" "none" ];
     default = "plasma";
-    description = "Desktop environment: Plasma 6 + SDDM, or GNOME + GDM (both Wayland).";
+    description = "Desktop environment: Plasma 6 + SDDM, GNOME + GDM (both Wayland), or none (headless).";
   };
 
   config = lib.mkMerge [
