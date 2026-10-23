@@ -33,7 +33,9 @@
         *) echo "usage: cak-mode server|desktop" >&2; exit 1 ;;
       esac
       # transient unit: survives the switch killing this terminal's session
-      sudo systemd-run --collect --pipe -E NIXOS_INSTALL_BOOTLOADER=1 "$sw" switch
+      # logind isn't restarted by a switch, so the lid setting only applies after this
+      sudo systemd-run --collect --pipe -E NIXOS_INSTALL_BOOTLOADER=1 \
+        sh -c '"$0" switch && systemctl restart systemd-logind' "$sw"
     '')
   ];
   services.dbus.packages = [ pkgs.mcontrolcenter ];
