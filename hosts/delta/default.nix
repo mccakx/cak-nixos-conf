@@ -25,6 +25,16 @@
   environment.systemPackages = with pkgs; [
     nvtopPackages.amd
     mcontrolcenter
+    (pkgs.writeShellScriptBin "cak-mode" ''
+      p=/nix/var/nix/profiles/system
+      case "$1" in
+        server)  sw=$p/specialisation/server/bin/switch-to-configuration ;;
+        desktop) sw=$p/bin/switch-to-configuration ;;
+        *) echo "usage: cak-mode server|desktop" >&2; exit 1 ;;
+      esac
+      # transient unit: survives the switch killing this terminal's session
+      sudo systemd-run --collect --pipe -E NIXOS_INSTALL_BOOTLOADER=1 "$sw" switch
+    '')
   ];
   services.dbus.packages = [ pkgs.mcontrolcenter ];
 
@@ -33,6 +43,21 @@
   # the module tree's updates/ dir, so it takes priority over the in-tree module.
   boot.kernelModules = [ "msi-ec" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.msi-ec ];
+
+  # Headless server mode: a boot-menu entry + live switch, same kernel as the
+  # desktop mode so no reboot is needed. Toggle with `cak-mode server|desktop`.
+  specialisation.server.configuration = {
+    services.displayManager.gdm.enable = lib.mkForce false;
+    services.desktopManager.gnome.enable = lib.mkForce false;
+    services.xserver.enable = lib.mkForce false;
+    systemd.defaultUnit = lib.mkForce "multi-user.target";
+    # keep running with the lid closed
+    services.logind.settings.Login = {
+      HandleLidSwitch = "ignore";
+      HandleLidSwitchExternalPower = "ignore";
+      HandleLidSwitchDocked = "ignore";
+    };
+  };
 
   #nixpkgs.hostPlatform = {
   #  gcc.arch = "znver3";
