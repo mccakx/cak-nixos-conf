@@ -19,13 +19,13 @@
     # lavd --performance beat bpfland and cosmos in a Cities: Skylines II A/B
     # test (2026-09-26): ~30% less run-queue wait, ~3x fewer preemptions,
     # more main-thread time and higher GPU utilisation.
-    # 2026-10-31: back on bpfland to test a Cyberpunk 2077 (Proton, 22 mods,
-    # 1080p, no RT, Crowd Density High) fps drop below 60 on lavd. Seen on
-    # lavd --performance, kernel 7.3.0-cachyos, scx 1.1.4: game ~700% CPU over
-    # ~12 redDispatcher threads, CPU PSI ~5%, GPU 50-87% busy at 860-1240 MHz /
-    # 71 W (CPU-bound, not starved). Cause unproven; scheduler A/B pending.
-    # If fps does not change, lavd is cleared: switch back and look at crowd
-    # density / vkd3d CPU cost / mods instead.
+    # 2026-10-31: back on bpfland. Cyberpunk 2077 (Proton, 22 mods, 1080p, no
+    # RT, Crowd Density High) ran under 60 fps on lavd --performance; hot-
+    # swapping to bpfland (same game process, kernel 7.3.0-cachyos, scx 1.1.4)
+    # gave ~80 fps (user-reported). lavd: GPU 50-87% busy at 860-1240 MHz / 71 W,
+    # CPU PSI ~5%; bpfland: GPU 67-82% busy at 2250-2480 MHz / 157 W, PSI ~8%;
+    # game CPU ~700% both. Low PSI did not mean healthy: lavd starved the GPU
+    # of frames. Scheduler choice is per-game, so A/B each; cosmos untested here.
     services.scx = {
       enable = true;
       scheduler = "scx_bpfland";
