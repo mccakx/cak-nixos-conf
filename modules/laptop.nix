@@ -19,8 +19,10 @@
       memoryPercent = 50;
     };
 
-    # gaming.nix pins scx_lavd --performance for the desktop. On battery that
-    # just burns power; --autopower follows the active power profile instead.
+    # gaming.nix picks the scheduler for the desktop (bpfland since 2026-10-31).
+    # --autopower is lavd-only and follows the active power profile, so the
+    # laptop pins lavd; --performance would just burn power on battery.
+    services.scx.scheduler = lib.mkIf config.cak.gaming.enable (lib.mkForce "scx_lavd");
     services.scx.extraArgs = lib.mkIf config.cak.gaming.enable (lib.mkForce [ "--autopower" ]);
 
     # Follow the power source: on battery -> power-saver profile (also lowers
