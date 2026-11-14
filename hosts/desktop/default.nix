@@ -32,7 +32,7 @@ in
       ipv4 = {
         method = "manual";
         address1 = "10.0.1.3/24,10.0.1.1";      # ADDRESS/PREFIX,GATEWAY
-        dns = "10.0.1.1;9.9.9.9;1.1.1.1;";
+        dns = "10.0.1.7;9.9.9.9;1.1.1.1";
       };
       ipv6.method = "disabled";
     };
