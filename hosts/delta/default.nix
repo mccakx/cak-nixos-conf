@@ -12,16 +12,7 @@
 
   cak.gaming.enable = true;
   cak.laptop.enable = true;
-  # Headless by default; the GNOME desktop is the `desktop` specialisation below.
-  cak.desktop = "none";
-  services.xserver.enable = lib.mkForce false; # services.nix turns it on
-  systemd.defaultUnit = "multi-user.target";
-  # keep running with the lid closed
-  services.logind.settings.Login = {
-    HandleLidSwitch = "ignore";
-    HandleLidSwitchExternalPower = "ignore";
-    HandleLidSwitchDocked = "ignore";
-  };
+  cak.desktop = "gnome";
 
   # Hibernate to the 32G swap partition (16G RAM)
   boot.resumeDevice = "/dev/disk/by-label/swap";
@@ -34,18 +25,6 @@
   environment.systemPackages = with pkgs; [
     nvtopPackages.amd
     mcontrolcenter
-    (pkgs.writeShellScriptBin "cak-mode" ''
-      p=/nix/var/nix/profiles/system
-      case "$1" in
-        server)  sw=$p/bin/switch-to-configuration ;;
-        desktop) sw=$p/specialisation/desktop/bin/switch-to-configuration ;;
-        *) echo "usage: cak-mode server|desktop" >&2; exit 1 ;;
-      esac
-      # transient unit: survives the switch killing this terminal's session
-      # logind isn't restarted by a switch, so the lid setting only applies after this
-      sudo systemd-run --collect --pipe -E NIXOS_INSTALL_BOOTLOADER=1 \
-        sh -c '"$0" switch && systemctl restart systemd-logind' "$sw"
-    '')
   ];
   services.dbus.packages = [ pkgs.mcontrolcenter ];
 
@@ -55,34 +34,6 @@
   boot.kernelModules = [ "msi-ec" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.msi-ec ];
 
-  # Desktop mode: a boot-menu entry + live switch, same kernel as the server
-  # base so no reboot is needed. Toggle with `cak-mode server|desktop`.
-  specialisation.desktop.configuration = {
-    cak.desktop = lib.mkForce "gnome";
-    services.xserver.enable = lib.mkOverride 40 true; # beats the base's mkForce false
-    systemd.defaultUnit = lib.mkForce "graphical.target";
-    services.logind.settings.Login = {
-      HandleLidSwitch = lib.mkForce "suspend";
-      HandleLidSwitchExternalPower = lib.mkForce "suspend";
-      HandleLidSwitchDocked = lib.mkForce "ignore";
-    };
-  };
-
-  #nixpkgs.hostPlatform = {
-  #  gcc.arch = "znver3";
-  #  gcc.tune = "znver3";
-  #  system = "x86_64-linux";
-  #};
-
-  #nix.settings.system-features = [
-  #  "nixos-test"
-  #  "benchmark"
-  #  "big-parallel"
-  #  "kvm"
-  #  "gccarch-znver3"
-  #];
-
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
