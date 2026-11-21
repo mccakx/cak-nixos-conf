@@ -67,14 +67,15 @@
   };
 
   nixpkgs.overlays = lib.singleton (final: prev: {
-    kdePackages = prev.kdePackages // {
+    # overrideScope (not //) so KDE packages depending on plasma-workspace get the patched one too
+    kdePackages = prev.kdePackages.overrideScope (kdeFinal: kdePrev: {
       plasma-workspace = let
 
         # the package we want to override
-        basePkg = prev.kdePackages.plasma-workspace;
+        basePkg = kdePrev.plasma-workspace;
 
         # a helper package that merges all the XDG_DATA_DIRS into a single directory
-        xdgdataPkg = pkgs.stdenv.mkDerivation {
+        xdgdataPkg = final.stdenv.mkDerivation {
           name = "${basePkg.name}-xdgdata";
           buildInputs = [ basePkg ];
           dontUnpack = true;
@@ -112,7 +113,7 @@
         };
 
       in derivedPkg;
-    };
+    });
   });
   
   hardware.bluetooth.enable = true;
