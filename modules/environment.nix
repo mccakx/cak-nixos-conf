@@ -1,8 +1,5 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, inputs, unstable, ... }:
 
-let
-  nixpkgsUnstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux";
-in
 {
   environment = {
     systemPackages = with pkgs; [
@@ -58,7 +55,7 @@ in
       spice-protocol
       spice-vdagent
 
-      (nixpkgsUnstable.protonplus)
+      unstable.protonplus
       kdiskmark
       mono
     ];

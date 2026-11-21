@@ -24,7 +24,10 @@
   let
     makeConfig = { username, hostFile }: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = {
+        inherit inputs;
+        unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
+      };
       modules = [
         aagl.nixosModules.default
         hostFile

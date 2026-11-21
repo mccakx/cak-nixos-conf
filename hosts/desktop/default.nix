@@ -1,8 +1,5 @@
-{ config, lib, pkgs, inputs, ... } :
+{ config, lib, pkgs, inputs, unstable, ... } :
 
-let
-  nixpkgsUnstable = inputs.nixpkgs-unstable.legacyPackages."x86_64-linux";
-in
 {
   imports =
     [
@@ -51,11 +48,11 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    (nixpkgsUnstable.lact)
+    unstable.lact
     nvtopPackages.amd
   ];
 
-  systemd.packages = with pkgs; [ (nixpkgsUnstable.lact) ];
+  systemd.packages = [ unstable.lact ];
   systemd.services.lactd.wantedBy = ["multi-user.target"];
 
   hardware.amdgpu.overdrive.enable = true;

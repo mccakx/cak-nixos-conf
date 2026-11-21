@@ -11,6 +11,20 @@
     services.upower.enable = true;
     services.fwupd.enable = true;
 
+    # Campus eduroam needs legacy TLS renegotiation (SSL_OP_LEGACY_SERVER_CONNECT).
+    # Only the roaming laptop gets this weaker setting, not the other hosts.
+    nixpkgs.overlays = [ (final: prev: {
+      wpa_supplicant = prev.wpa_supplicant.overrideAttrs (attrs: {
+        patches = attrs.patches ++ [ ./eduroam.patch ];
+      });
+    }) ];
+
+    # The laptop roams onto untrusted Wi-Fi: don't expose Steam ports there
+    # (gaming.nix opens them for the desktop).
+    programs.steam.remotePlay.openFirewall = lib.mkForce false;
+    programs.steam.dedicatedServer.openFirewall = lib.mkForce false;
+    programs.steam.localNetworkGameTransfers.openFirewall = lib.mkForce false;
+
     # Compressed RAM swap first (priority 5), disk swap partition as overflow
     # and for hibernation (priority -2 by default).
     zramSwap = {

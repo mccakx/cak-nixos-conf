@@ -46,14 +46,18 @@
       substituters = [ "https://ezkea.cachix.org" "https://cache.lantian.pub/lantian" "https://cache.xinux.uz" ];
       trusted-public-keys = [ "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=" "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0=" ];
     };
+  };
 
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
+  # Keep the last 5 generations (same as the boot menu) plus anything under 14 days;
+  # nix.gc --delete-older-than would delete the generation you roll back to.
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep 5 --keep-since 14d";
     };
   };
-  
+
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -61,10 +65,6 @@
   };
   
   nixpkgs.overlays = lib.singleton (final: prev: {
-    wpa_supplicant = prev.wpa_supplicant.overrideAttrs (attrs: {
-      patches = attrs.patches ++ [ ./eduroam.patch ];
-    });
-
     # overrideScope (not //) so KDE packages depending on plasma-workspace get the patched one too
     kdePackages = prev.kdePackages.overrideScope (kdeFinal: kdePrev: {
       plasma-workspace = let
@@ -96,14 +96,21 @@
         # script and instead inject the path of the above helper package
         derivedPkg = basePkg.overrideAttrs {
           preFixup = ''
+            removed=0
             for index in "''${!qtWrapperArgs[@]}"; do
               if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
                 unset -v "qtWrapperArgs[$((index+0))]"
                 unset -v "qtWrapperArgs[$((index+1))]"
                 unset -v "qtWrapperArgs[$((index+2))]"
                 unset -v "qtWrapperArgs[$((index+3))]"
+                removed=1
               fi
             done
+            # fail loudly if nixpkgs changed the wrapper layout, instead of silently doing nothing
+            if [ "$removed" != 1 ]; then
+              echo "plasma-workspace overlay: no XDG_DATA_DIRS wrapper argument found" >&2
+              exit 1
+            fi
             qtWrapperArgs=("''${qtWrapperArgs[@]}")
             qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
             qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")

@@ -58,7 +58,7 @@ update-nixos
 nix flake update
 
 # garbage-collect old generations
-nix-collect-garbage --delete-older-than 14d
+nh clean all --keep 5 --keep-since 14d
 ```
 
 ## Installing delta (fresh, wipes the disk)

@@ -14,9 +14,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Update flake.lock
         run: nix flake update
@@ -27,6 +27,14 @@ jobs:
           for h in desktop delta nixos-test; do
             nix eval --raw ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath" > /dev/null
           done
+
+      # evaluation can't tell that a patch stopped applying or a theme build broke;
+      # these two are small (plasma-workspace is too big to build in CI)
+      - name: Build the hand-patched packages
+        run: |
+          flake="(builtins.getFlake \"path:$PWD\").nixosConfigurations"
+          nix build --impure --no-link --expr "$flake.delta.pkgs.wpa_supplicant"
+          nix build --impure --no-link --expr "builtins.head $flake.desktop.config.boot.plymouth.themePackages"
 
       - name: Commit and push
         run: |

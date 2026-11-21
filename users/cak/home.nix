@@ -2,6 +2,6 @@
 
   imports = [
     ../../home/default.nix
-    ../../home/programs
+    ../../home/programs/common.nix
   ];
 }
