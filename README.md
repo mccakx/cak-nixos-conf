@@ -100,8 +100,8 @@ nixos-generate-config --root /mnt --show-hardware-config | grep -A1 availableKer
 # install; the extra caches serve the prebuilt CachyOS kernel + aagl
 nixos-install --no-root-password --flake github:mccakx/cak-nixos-conf#delta \
   --option extra-experimental-features "nix-command flakes" \
-  --option extra-substituters "https://attic.xuyh0120.win/lantian https://ezkea.cachix.org https://cache.xinux.uz" \
-  --option extra-trusted-public-keys "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc= ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI= cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
+  --option extra-substituters "https://cache.lantian.pub/lantian https://ezkea.cachix.org https://cache.xinux.uz" \
+  --option extra-trusted-public-keys "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ= ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI= cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
 
 reboot
 ```

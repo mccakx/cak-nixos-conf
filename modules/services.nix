@@ -35,7 +35,12 @@
     };
     openssh = {
       enable = true;
-      settings.PermitRootLogin = "no";
+      settings = {
+        PermitRootLogin = "no";
+        # key-only; keyboard-interactive would let PAM accept the password anyway
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+      };
     };
     btrfs.autoScrub = {
       enable = true;

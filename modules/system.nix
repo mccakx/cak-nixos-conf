@@ -60,13 +60,11 @@
     };
   };
   
-  nixpkgs.config.packageOverrides = pkgs: rec {
-    wpa_supplicant = pkgs.wpa_supplicant.overrideAttrs (attrs: {
+  nixpkgs.overlays = lib.singleton (final: prev: {
+    wpa_supplicant = prev.wpa_supplicant.overrideAttrs (attrs: {
       patches = attrs.patches ++ [ ./eduroam.patch ];
     });
-  };
 
-  nixpkgs.overlays = lib.singleton (final: prev: {
     # overrideScope (not //) so KDE packages depending on plasma-workspace get the patched one too
     kdePackages = prev.kdePackages.overrideScope (kdeFinal: kdePrev: {
       plasma-workspace = let

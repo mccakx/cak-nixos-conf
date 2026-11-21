@@ -21,6 +21,13 @@ jobs:
       - name: Update flake.lock
         run: nix flake update
 
+      # a lock bump that breaks any host must not reach main
+      - name: Evaluate every host
+        run: |
+          for h in desktop delta nixos-test; do
+            nix eval --raw ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath" > /dev/null
+          done
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"

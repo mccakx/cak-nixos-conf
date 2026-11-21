@@ -22,7 +22,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-cachyos-kernel, aagl, home-manager, ... } @ inputs:
   let
-    makeConfig = { username, hostFile, extraModules ? [] }: nixpkgs.lib.nixosSystem {
+    makeConfig = { username, hostFile }: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
@@ -34,7 +34,7 @@
           home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.users.${username} = import ./users/${username}/home.nix;
         }
-      ] ++ extraModules;
+      ];
     };
   in
   {

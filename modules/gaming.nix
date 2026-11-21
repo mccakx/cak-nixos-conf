@@ -7,7 +7,7 @@
   '';
 
   config = lib.mkIf config.cak.gaming.enable {
-    # CachyOS -latest- (7.2.x). Needs the Samsung TV's "HDMI UHD Color" ON for
+    # CachyOS -latest- (7.3.x as of 2026-11). Needs the Samsung TV's "HDMI UHD Color" ON for
     # HDMI-A-1: with it off the TV sends an HDMI-1.4-style EDID (no HDMI Forum
     # block) and 7.2's new amdgpu HDMI-FRL status polling (DC v3.2.384) loses the
     # connector -> kwin "no outputs" -> blank SDDM. Upstream fix is queued for
