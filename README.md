@@ -51,6 +51,9 @@ Adding a host: create `hosts/<name>/` and register it in `flake.nix`'s `makeConf
 # apply this machine's config
 sudo nixos-rebuild switch --flake .#<hostname>
 
+# pull the latest config and apply it on next boot (expects the repo at ~/cak-nixos-conf)
+update-nixos
+
 # update flake.lock
 nix flake update
 

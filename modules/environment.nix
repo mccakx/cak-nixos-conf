@@ -31,6 +31,14 @@ in
       libnotify
       xdg-utils
       git
+      # pull the config and stage it for next boot (not a live switch)
+      (writeShellScriptBin "update-nixos" ''
+        set -euo pipefail
+        cd "$HOME/cak-nixos-conf"
+        git fetch
+        git pull --ff-only
+        sudo nixos-rebuild boot --flake ".#$(hostname)"
+      '')
       wget
       libarchive
       sof-firmware
